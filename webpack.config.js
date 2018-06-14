@@ -15,16 +15,30 @@ module.exports = {
     module: {
         rules: [
             {
-                text: /(\.jsx|\.js)$/,
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: [
-                            "env", "react"
-                        ]
+                    loader: 'babel-loader',
+                    // 为了方便会把babel配置项分出去成一个.babelrc文件
+                    // options: {
+                    //     presets: [
+                    //         "env", "react", ["es2015", {"loose": true}],
+                    //     ]
+                    // }
+                }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    { loader: "style-loader" },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: true, // 指定启用CSS modules
+                            localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
+                        }
                     }
-                },
-                exclude: /node_modules/ //屏蔽不需要处理的文件
+                ]
             }
         ]
     }
