@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 //已经被webpack4移除请使用mini-css-extract-plugin
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -9,7 +10,7 @@ module.exports = {
     entry: __dirname + "/app/main.js", //已多次提及的唯一入口文件
     output: {
         path: __dirname + "/build", //打包后的文件存放的地方  二笔的错误少了一个斜杠路径问题
-        filename: "bundle.js" //打包后输出文件的文件名
+        filename: "bundle.js-[hash].js" //打包后输出文件的文件名
     },
     devServer: {
         contentBase: "./build", //本地服务器所加载的页面所在的目录
@@ -65,6 +66,11 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin(), //热加载组件
         new webpack.optimize.OccurrenceOrderPlugin(),
+        new CleanWebpackPlugin('build/*.*', {
+            root: __dirname,
+            verbose: true,
+            dry: false
+        })
         // new webpack.optimize.UglifyJsPlugin(),//webpack4中被移除使用optimization.minimize替代或者production环境下自动压缩
         // new MiniCssExtractPlugin({
         //     // Options similar to the same options in webpackOptions.output
